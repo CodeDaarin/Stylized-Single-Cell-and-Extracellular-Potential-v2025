@@ -89,12 +89,17 @@ def plot_variable_with_morphology(seg_coords, seg_prop, variable, t=None, axes =
     sm.autoscale()
 
     # Figure
-    fig = plt.figure(figsize=figsize)
-    axs = []
+    fig, axs = plt.subplots(1, 3, gridspec_kw={'width_ratios': [1, 4, 8]}, figsize=figsize)
+
+    # Color bar
+    ax = axs[0]
+    ax.axis('off')
+    cbar = fig.colorbar(sm, ax=ax, fraction=0.2, aspect=40, pad=0.)
+    cbar.ax.tick_params(labelsize=fontsize)
+    cbar.set_label(distance_type, size=fontsize)
 
     # Morphology
-    ax = plt.subplot(1,3,1)
-    axs.append(ax)
+    ax = axs[1]
     # Plot
     for i in np.nonzero(soma_idx)[0]:
         ax.plot(*pc[i], color='r', marker='s', markersize=r[i])
@@ -106,10 +111,6 @@ def plot_variable_with_morphology(seg_coords, seg_prop, variable, t=None, axes =
                                   sep_x=5, sep_y=5, back_length=0, head_width=0, head_length=0.01)
     ax.add_artist(bar)
     ax.axis('off')
-    # Color bar
-    cbar = fig.colorbar(sm, location='left', fraction=0.03, aspect=40, pad=0.)
-    cbar.ax.tick_params(labelsize=fontsize)
-    cbar.set_label(distance_type, size=fontsize)
     # Arrows head positions
     xl = ax.get_xlim()
     yl = ax.get_ylim()
@@ -129,8 +130,7 @@ def plot_variable_with_morphology(seg_coords, seg_prop, variable, t=None, axes =
     ax.set_ylim(yl)
 
     # Variable traces
-    ax = plt.subplot(1,3,(2,3))
-    axs.append(ax)
+    ax = axs[2]
     # Variable traces and time points
     X = variable[sorted_seg_idx,:]
     if t is None:
@@ -161,8 +161,8 @@ def plot_variable_with_morphology(seg_coords, seg_prop, variable, t=None, axes =
     ax.yaxis.tick_right()
     ax.tick_params(axis='x', labelsize=fontsize)
     ax.tick_params(axis='y', labelsize=fontsize)
-    ax.spines.left.set_visible(False)
-    ax.spines.top.set_visible(False)
+    ax.spines['left'].set_visible(False)
+    ax.spines['top'].set_visible(False)
 
     fig.tight_layout(w_pad=-.5)
     plt.show()
