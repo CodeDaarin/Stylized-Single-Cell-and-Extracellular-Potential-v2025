@@ -73,7 +73,7 @@ def plot_morphology(sim: Optional = None, cellid: Optional[int] = 0, cell: Optio
     dl = move_position([0., 0., 0.], move_cell[1], seg_coords['dl'])
     pc = move_position(move_cell[0], move_cell[1], seg_coords['pc'])
     xyz = 'xyz'
-    box = np.vstack([np.full(3, np.inf), np.full(3, np.NINF)])
+    box = np.vstack([np.full(3, np.inf), np.full(3, -np.inf)])
     if electrodes is not None:
         box[0, axes[0:2]] = np.amin(electrodes[:, axes[0:2]], axis=0)
         box[1, axes[0:2]] = np.amax(electrodes[:, axes[0:2]], axis=0)
@@ -110,3 +110,4 @@ def plot_morphology(sim: Optional = None, cellid: Optional[int] = 0, cell: Optio
     ax.set_zlabel(xyz[axes[2]])
     plt.show()
     return fig, ax
+
